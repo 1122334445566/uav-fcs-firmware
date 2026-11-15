@@ -1,0 +1,25 @@
+# Build artefacts
+build/
+*.o
+*.a
+*.exe
+*.obj
+*.ilk
+*.pdb
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+
+# SIL output
+*.csv
+*.bin
+sil_trace.csv
+fcs_params.bin
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+__pycache__/
+.zig-cache-*/

@@ -1,0 +1,30 @@
+name: firmware-ci
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build (warnings are errors in review)
+        run: cmake --build build --parallel 2
+
+      - name: Unit tests + closed-loop SIL regressions
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Upload flight traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sil-traces
+          path: build/sil_*.csv
+          if-no-files-found: ignore
